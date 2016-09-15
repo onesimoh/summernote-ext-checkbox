@@ -33,12 +33,17 @@
             });
 
             this.createCheckbox = function () {
+                // IE workaround: input type must be included within non-contenteditable section, otherwise click event will not trigger.
+                var container = document.createElement('span');
+                $(container).attr('contenteditable', false);
                 var elem = document.createElement('input');
                 elem.type = "checkbox";
-                return elem;
+
+                $(elem).appendTo($(container));
+                return container;
             }
 
-            // This events will be attached when editor is initialized.
+            // These events will be attached when editor is initialized.
             this.events = {
                 'summernote.init': function (we, e) {                    
                 },
@@ -50,8 +55,8 @@
                 var layoutInfo = context.layoutInfo;
                 var $editor = layoutInfo.editor;
 
-                $editor.click(function (event) {
-                    if (event.target.type && event.target.type == 'checkbox') {
+                $editor.on('click', function (event) {
+                    if (event.target.type && event.target.type == 'checkbox') {                        
                         var checked = $(event.target).is(':checked');
                         $(event.target).attr('checked', checked);
                         context.invoke('insertText', '');
