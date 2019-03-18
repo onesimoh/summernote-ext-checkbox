@@ -24,6 +24,7 @@
                 var button = ui.button({
                     contents: '<i class="glyphicon glyphicon-check"/>',
                     tooltip: 'Checkbox',
+                    container: false,
                     click: function () {
                         context.invoke('insertNode', self.createCheckbox());
                     }
